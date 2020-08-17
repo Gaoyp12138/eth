@@ -59,7 +59,8 @@ public class EthScheduled {
                         Web3j web3j = Web3j.build(new HttpService(ResourceParam.getRpcNodeUrl()));
                         Transaction transaction = web3j.ethGetTransactionByHash(txHash).send().getResult();
                         TransactionReceipt tr = web3j.ethGetTransactionReceipt(txHash).send().getResult();
-                        if (null != tr.getTo() && tr.getTo().equals("0x5acc84a3e955bdd76467d3348077d003f00ffb97")) {
+                        log.info(tr.getTo());
+                        if (null != tr.getTo() && tr.getTo().toLowerCase().equals("0x5acc84a3e955bdd76467d3348077d003f00ffb97")) {
                             BigInteger value = transaction.getValue();
                             totalV = value.add(totalV);
                             log.info("算了一次： " + totalV);
