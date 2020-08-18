@@ -31,7 +31,7 @@ public class Scan {
         List<Data> list = getList(start);
         String startNumber = getStart(list);
         getSum(list);
-        if (!startNumber.equals("10681653")) {
+        if (!startNumber.equals("10681651")) {
             test(startNumber);
         }
         return sum;
@@ -65,7 +65,7 @@ public class Scan {
 
     public void getSum(List<Data> dataList) {
         for (Data data : dataList) {
-            if (data.getTo().toLowerCase().equals("0x5acc84a3e955bdd76467d3348077d003f00ffb97")) {
+            if (data.getTo().toLowerCase().equals("0x5acc84a3e955bdd76467d3348077d003f00ffb97") && data.getTxreceipt_status().equals("1")) {
                 log.info("本次投入： " + Convert.fromWei(data.getValue(), Convert.Unit.ETHER));
                 sum = sum.add(new BigInteger(data.getValue()));
             }

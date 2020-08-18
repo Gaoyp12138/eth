@@ -17,4 +17,6 @@ public class Data {
     private String value;
 
     private String to;
+
+    private String txreceipt_status;
 }
