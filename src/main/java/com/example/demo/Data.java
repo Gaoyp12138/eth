@@ -15,4 +15,6 @@ public class Data {
     private String blockNumber;
 
     private String value;
+
+    private String to;
 }

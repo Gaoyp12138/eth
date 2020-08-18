@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.web3j.utils.Convert;
 
 import java.math.BigInteger;
 import java.util.HashMap;
@@ -30,15 +31,16 @@ public class Scan {
         List<Data> list = getList(start);
         String startNumber = getStart(list);
         getSum(list);
-        if (list != null || !list.isEmpty()) {
+        if (startNumber.equals("10681653")) {
             test(startNumber);
         }
         return sum;
     }
 
     public List<Data> getList(String start) {
-        String url = "https://api.etherscan.io/api?module=account&action=txlist&address=0x5acc84a3e955bdd76467d3348077d003f00ffb97&startblock=%s&endblock=10677912&sort=asc&apikey=B6HZQ7IUEG4QUAS6UX5AD99V8BISJRDJYN";
+        String url = "https://api.etherscan.io/api?module=account&action=txlist&address=0x5acc84a3e955bdd76467d3348077d003f00ffb97&startblock=%s&endblock=10681653&sort=asc&apikey=B6HZQ7IUEG4QUAS6UX5AD99V8BISJRDJYN";
         String format = String.format(url, start);
+        log.info("请求地址：" + format);
         String result = OkHttpClientHelper.get(format, new HashMap<>(), new HashMap<>());
         JSONObject jsonObject = JSONObject.parseObject(result);
         String status = (String) jsonObject.get("status");
@@ -55,6 +57,7 @@ public class Scan {
             int size = dataList.size();
             Data lastData = dataList.get(size - 1);
             String blockNumber = lastData.getBlockNumber();
+            log.info("起始块：" + blockNumber);
             return blockNumber;
         }
         return null;
@@ -62,9 +65,12 @@ public class Scan {
 
     public void getSum(List<Data> dataList) {
         for (Data data : dataList) {
-            sum = sum.add(new BigInteger(data.getValue()));
+            if (data.getTo().toLowerCase().equals("0x5acc84a3e955bdd76467d3348077d003f00ffb97")) {
+                log.info("本次投入： " + Convert.fromWei(data.getValue(), Convert.Unit.ETHER));
+                sum = sum.add(new BigInteger(data.getValue()));
+            }
         }
-        log.info("算了一次： " + sum);
+        log.info("算了一次------------------------： " + Convert.fromWei(sum.toString(), Convert.Unit.ETHER));
     }
 
 }
