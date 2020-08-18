@@ -31,7 +31,7 @@ public class Scan {
         List<Data> list = getList(start);
         String startNumber = getStart(list);
         getSum(list);
-        if (startNumber.equals("10681653")) {
+        if (!startNumber.equals("10681653")) {
             test(startNumber);
         }
         return sum;
